@@ -14,14 +14,19 @@ class BoxOfficeMojo:
         return self.URL
 
     def scrape_all_titles(self) -> list:
+        '''Finding all the current top box office movie titles'''
+
         self.all_titles = self.soup.select('td', class_='a-link-normal')
         return self.all_titles
 
     def scrape_headers(self) -> list:
+        '''Finding all the headers to display'''
+
         self.all_h2 = self.soup.select('div h2')
         return self.all_h2
 
 def get_headers(h2: list) -> list:
+    '''Creating a list from all the headers'''
 
     header_container = []
     for headers in h2:
@@ -32,6 +37,8 @@ def get_headers(h2: list) -> list:
     return header_container
 
 def display_daily_boxoffice(titles: list, header: list) -> None:
+    '''displaying all top daily performing movies'''
+
     print(f"\n{header.ljust(50, '.')}")
     for title in titles[40:50]:
         title.text.split('\n')
@@ -39,6 +46,8 @@ def display_daily_boxoffice(titles: list, header: list) -> None:
         print(info)
 
 def display_weekend_boxoffice(weeknd_titles: list, weeknd_header: list) -> None:
+    '''displaying weekend box office'''
+
     print(f"\n{weeknd_header.ljust(50, '.')}")
     for title in weeknd_titles[51:73]:
         title.text.split('\n')
@@ -49,6 +58,8 @@ def display_weekend_boxoffice(weeknd_titles: list, weeknd_header: list) -> None:
                     print(weeknd_info)
 
 def display_usa_yearly(usa_titles: list, usa_header: list) -> None:
+    '''displaying top movies in the USA'''
+
     print(f"\n{usa_header.ljust(50, '.')}")
     for title in usa_titles[101:119]:
         title.text.split('\n')
@@ -59,6 +70,8 @@ def display_usa_yearly(usa_titles: list, usa_header: list) -> None:
                     print(usa_info)
 
 def display_worldwide_yearly(world_titles: list, world_header: list) -> None:
+    '''Displaying worldwide box office'''
+
     print(f"\n{world_header.ljust(50, '.')}")
     for title in world_titles[121:]:
         title.text.split('\n')
@@ -69,6 +82,7 @@ def display_worldwide_yearly(world_titles: list, world_header: list) -> None:
                     print(world_info)
 
 def main():
+    '''main function that runs the program'''
     webscraper = BoxOfficeMojo()
     all_titles = webscraper.scrape_all_titles()
     headers = webscraper.scrape_headers()
