@@ -1,14 +1,17 @@
 
-
 from bs4 import BeautifulSoup
 import requests
 
 class BoxOfficeMojo:
 
     def __init__(self):
-        self.URL = requests.get('https://www.boxofficemojo.com/')
-        self.web_site = self.URL.text
-        self.soup = BeautifulSoup(self.web_site, 'html.parser')
+        self.URL = 'https://www.boxofficemojo.com/'
+        response = requests.get(self.URL)
+        web_site = response.text
+        self.soup = BeautifulSoup(web_site, 'html.parser')
+
+    def __repr__(self) -> str:
+        return self.URL
 
     def scrape_all_titles(self) -> list:
         self.all_titles = self.soup.select('td', class_='a-link-normal')
@@ -18,7 +21,7 @@ class BoxOfficeMojo:
         self.all_h2 = self.soup.select('div h2')
         return self.all_h2
 
-def get_headers(h2) -> list:
+def get_headers(h2: list) -> list:
 
     header_container = []
     for headers in h2:
@@ -28,14 +31,14 @@ def get_headers(h2) -> list:
 
     return header_container
 
-def display_daily_boxoffice(titles, header) -> None:
+def display_daily_boxoffice(titles: list, header: list) -> None:
     print(f"\n{header.ljust(50, '.')}")
     for title in titles[40:50]:
         title.text.split('\n')
         info = title.text.strip()
         print(info)
 
-def display_weekend_boxoffice(weeknd_titles, weeknd_header) -> None:
+def display_weekend_boxoffice(weeknd_titles: list, weeknd_header: list) -> None:
     print(f"\n{weeknd_header.ljust(50, '.')}")
     for title in weeknd_titles[51:73]:
         title.text.split('\n')
@@ -45,7 +48,7 @@ def display_weekend_boxoffice(weeknd_titles, weeknd_header) -> None:
                 if weeknd_info != '4' and weeknd_info != '5':
                     print(weeknd_info)
 
-def display_usa_yearly(usa_titles, usa_header) -> None:
+def display_usa_yearly(usa_titles: list, usa_header: list) -> None:
     print(f"\n{usa_header.ljust(50, '.')}")
     for title in usa_titles[101:119]:
         title.text.split('\n')
@@ -55,7 +58,7 @@ def display_usa_yearly(usa_titles, usa_header) -> None:
                 if usa_info != '5':
                     print(usa_info)
 
-def display_worldwide_yearly(world_titles, world_header) -> None:
+def display_worldwide_yearly(world_titles: list, world_header: list) -> None:
     print(f"\n{world_header.ljust(50, '.')}")
     for title in world_titles[121:]:
         title.text.split('\n')
@@ -77,3 +80,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
